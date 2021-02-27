@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Oscillator Type</title>
+</head>
+<body>
+
+	<h1>Oscillator Type</h1>
+
+	
+	<button id="start">start</button>
+	<button id="stop" >stop </button>
+
+	
+	<hr>
+	<button id="sine">sine</button>
+	<button id="square" >square </button>
+	<button id="sawtooth" >sawtooth </button>
+	<button id="triangle" >triangle </button>
+
+	<hr>
+	
+	<p>see <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode">OscillatorNode</a></p>
+	<script>
+
+		// create web audio api context
+		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+		// create Oscillator node
+		var oscillator = audioCtx.createOscillator();
+
+		oscillator.type = 'square';
+		oscillator.frequency.setValueAtTime(3000, audioCtx.currentTime); // value in hertz
+		oscillator.connect(audioCtx.destination);
+		
+		
+
+		document.querySelector('#start').onclick = function() { oscillator.start(); }
+		document.querySelector('#stop').onclick = function() { oscillator.stop(); }
+		
+		
+		document.querySelector('#sine').onclick = function() { oscillator.type = 'sine'; }
+		document.querySelector('#square').onclick = function() { oscillator.type = 'square'; }
+		document.querySelector('#sawtooth').onclick = function() { oscillator.type = 'sawtooth'; }
+		document.querySelector('#triangle').onclick = function() { oscillator.type = 'triangle'; }
+
+	</script>
+
+</body>
+
+</html>

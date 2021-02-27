@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Oscillator Detune</title>
+</head>
+<body>
+
+	<h1>Oscillator Detune</h1>
+
+	
+	<button id="start">start</button>
+	<button id="stop" >stop </button>
+
+	
+	<hr>
+
+	<input type="number" id="detune" value="30"></input>
+	
+	<hr>
+	
+	<p>see <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode">OscillatorNode</a></p>
+	<script>
+
+		// create web audio api context
+		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+		// create Oscillator node
+		var oscillator = audioCtx.createOscillator();
+
+		oscillator.connect(audioCtx.destination);
+		
+		
+
+		document.querySelector('#start').onclick = function() { oscillator.start(); }
+		document.querySelector('#stop').onclick = function() { oscillator.stop(); }
+		
+		document.querySelector('#detune').addEventListener('input', (event) => {
+
+			oscillator.detune.setValueAtTime(event.target.value, audioCtx.currentTime); // value in cents
+
+		});
+
+	</script>
+
+</body>
+
+</html>

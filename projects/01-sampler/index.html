@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebAudio Sampler</title>
+	<script src="/jquery.js"></script>
+
+	<style>table {
+		width: 100%;
+		table-layout:fixed
+}
+td {
+  width: 33.33%;
+  position: relative;
+}
+td:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+td div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: gold;
+  border-radius:5px;
+  text-align:center;
+  font-size:2em;
+  padding:1em
+} audio{width:100%;bottom:0;position:absolute; left:0}input{display:inline-block; width:90%}div{font-weight:700}
+	input[type="file"]{display:none}</style>
+</head>
+<body>
+
+	<h1>Sampler</h1>
+
+	
+	
+	<hr>
+	
+	
+	<table>
+   <tr>
+	 <td><div>1
+		 <audio controls src="/assets/kick.wav"></audio>
+		 <input type="file"/>
+
+	 </div>
+	 </td>
+	 <td><div>2<audio controls src="/assets/snare.wav"></audio><input type="file"/></div></td>
+	 <td><div>3<audio controls src="/assets/tom.wav"></audio><input type="file"/></div></td>
+	 <td><div>4<audio controls src="/assets/cymbal.wav"></audio><input type="file"/></div></td>
+   </tr>
+   <tr>
+	   <td><div>5<audio controls src="/assets/hat1.wav"></audio><input type="file"/></div></td>
+	   <td><div>6<audio controls src="/assets/hat2.wav"></audio><input type="file"/></div></td>
+	   <td><div>7<audio controls src="/assets/hat3.wav"></audio><input type="file"/></div></td>
+	   <td><div>8<audio controls src="/assets/click.wav"></audio><input type="file"/></div></td>
+   </tr>
+   <tr>
+	   <td><div>9<audio controls src="/assets/click.wav"></audio><input type="file"/></div></td>
+	   <td><div>10<audio controls src="/assets/click.wav"></audio><input type="file"/></div></td>
+	   <td><div>11<audio controls src="/assets/click.wav"></audio><input type="file"/></div></td>
+	   <td><div>12<audio controls src="/assets/click.wav"></audio><input type="file"/></div></td>
+   </tr>
+
+ </table>
+
+	
+	
+	
+	<script>
+
+		// create web audio api context
+		var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		
+		$('td div').on("mousedown touchstart", function() {
+
+			var i = parseInt($(this).parent().text()) - 1
+			//var sdfg = $("audio").eq(1);
+			
+			document.getElementsByTagName('audio')[i].currentTime = 0;
+
+			document.getElementsByTagName('audio')[i].play();
+			
+
+
+			//sdfg.play()
+
+			$(this).css("background", "red");
+			
+		});
+	$('td div').on("mouseup touchend", function() {
+		$(this).css("background", "gold");
+
+		});
+	
+	
+		
+	
+	// for each file input...
+	
+	  $( "input" ).each(function( index, element ) {
+	
+	var i =  index
+	$(this).on('change', function(e) {
+	  var target = e.currentTarget;
+	  var file = target.files[0];
+	  var reader = new FileReader();
+	  
+	  
+	 
+	 // document.getElementsByTagName('audio')[i].currentTime = 0;
+	//  console.log($audio[0]);
+	   if (target.files && file) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				
+
+				
+				document.getElementsByTagName('audio')[i].src = e.target.result;
+				//document.getElementsByTagName('audio')[0].play();
+				$('td div').eq(i).css("background", "pink");
+
+			}
+			reader.readAsDataURL(file);
+		}
+	});
+	
+	
+	  });
+
+	
+	
+	
+	
+	
+	function handleDrop(e) {
+	  e.stopPropagation(); // Stops some browsers from redirecting.
+	  e.preventDefault();
+	  console.log(e)
+
+	  
+	  var sdfg = e.target
+	  var inum = parseInt($(this).parent().text()) - 1
+	  var files = e.dataTransfer.files;
+	  //for (var i = 0, f; f = files[i]; i++) {
+		  
+  document.getElementsByTagName('input')[inum].files = files
+
+		//  console.log(f)
+		//  filein.files = files;
+
+		  var event = document.createEvent("UIEvents");
+	event.initUIEvent("change", true, true);
+	document.getElementsByTagName('input')[inum].dispatchEvent(event);
+		// Read the File objects in this FileList.
+	//  }
+	}
+	
+	var allTags = document.getElementsByTagName('div');
+	for (var i = 0, len = allTags.length; i < len; i++) {
+		
+		
+		// Setup the dnd listeners.
+	 var dropZone = document.getElementsByTagName('div')[i];
+	// dropZone.addEventListener('dragover', handleDragOver, false);
+	 dropZone.addEventListener('drop', handleDrop);
+	 
+	 dropZone.ondragover = dropZone.ondragenter = function(evt) {
+	   evt.preventDefault();
+	}
+	
+ };
+		
+	</script>
+
+</body>
+
+</html>
